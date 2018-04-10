@@ -110,14 +110,14 @@ const joiner = (playersArray) =>{
         domString += `<h3>${playersArray[0].name} is the winner!!!!</h3>`;
         console.log(playersArray[0].badges);
         for (let i = 0; i < playersArray[0].badges.length; i++) {
-            domString += `<img class="img-responsive" src="${playersArray[0].badges[i].icon_url}">`;
+            domString += `<img class="img-responsive"  id="badge" src="${playersArray[0].badges[i].icon_url}">`;
         }
         }
          else
         {
         domString += `<h3>${playersArray[1].name} is the winner!!!!</h3>`;
         for (let m = 0; m < playersArray[1].badges.length; m++) {    
-            domString += `<img class="img-responsive" src="${playersArray[1].badges[m].icon_url}">`;
+            domString += `<img class="img-responsive" id="badge" src="${playersArray[1].badges[m].icon_url}">`;
         }
     }
     printToDom(domString,"winner");
