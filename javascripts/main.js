@@ -1,45 +1,43 @@
 const eventTargetButton = (e) => {
     const buttonTarget = document.getElementById("start");
-    buttonTarget.addEventListener("click", httpPlayer1);
-    buttonTarget.addEventListener("click", httpPlayer2);
+    // buttonTarget.addEventListener("click", httpPlayer1);
+    // buttonTarget.addEventListener("click", httpPlayer2);
     buttonTarget.addEventListener("click", httpPlayers);
- 
- 
-}
-function httpPlayer1 (e) {
-    console.log(e);
-    const playerOneUser = document.getElementById("user1");
-    const playerOneUserValue = playerOneUser.value;
-    const http = new XMLHttpRequest();
-    http.onreadystatechange = function (){
-        if (http.readyState == 4 && http.status == 200) {
-            const data1 = JSON.parse(http.responseText);
-            console.log(data1);
-            domString1(data1);
-        } else{
-            console.log("status", http.status);
-        }
-    }
-    http.open("GET", `https://teamtreehouse.com/${playerOneUserValue}.json`);
-    http.send();
 };
-function httpPlayer2 (e) {
-    console.log(e);
-    const playerTwoUser = document.getElementById("user2");
-    const playerTwoUserValue = playerTwoUser.value;
-    const http = new XMLHttpRequest();
-    http.onreadystatechange = function (){
-        if (http.readyState == 4 && http.status == 200) {
-            const data2 = JSON.parse(http.responseText);
-            console.log(data2);
-            domString2(data2);
-        } else{
-            console.log("status", http.status);
-        }
-    }
-    http.open("GET", `https://teamtreehouse.com/${playerTwoUserValue}.json`);
-    http.send();
-};
+// function httpPlayer1 (e) {
+//     console.log(e);
+//     const playerOneUser = document.getElementById("user1");
+//     const playerOneUserValue = playerOneUser.value;
+//     const http = new XMLHttpRequest();
+//     http.onreadystatechange = function (){
+//         if (http.readyState == 4 && http.status == 200) {
+//             const data1 = JSON.parse(http.responseText);
+//             console.log(data1);
+//             domString1(data1);
+//         } else{
+//             console.log("status", http.status);
+//         }
+//     }
+//     http.open("GET", `https://teamtreehouse.com/${playerOneUserValue}.json`);
+//     http.send();
+// };
+// function httpPlayer2 (e) {
+//     console.log(e);
+//     const playerTwoUser = document.getElementById("user2");
+//     const playerTwoUserValue = playerTwoUser.value;
+//     const http = new XMLHttpRequest();
+//     http.onreadystatechange = function (){
+//         if (http.readyState == 4 && http.status == 200) {
+//             const data2 = JSON.parse(http.responseText);
+//             console.log(data2);
+//             domString2(data2);
+//         } else{
+//             console.log("status", http.status);
+//         }
+//     }
+//     http.open("GET", `https://teamtreehouse.com/${playerTwoUserValue}.json`);
+//     http.send();
+// };
 
 const domString1 = (dataArray) =>{
     console.log(dataArray);
@@ -64,9 +62,6 @@ const domString2 = (dataArray) =>{
 printToDom = (domString, DivId) => {
     document.getElementById(DivId).innerHTML = domString;
 }
-
-
-
 function httpPlayers (e) {
     let players = [];
     const playerOneUser = document.getElementById("user1");
@@ -76,8 +71,8 @@ function httpPlayers (e) {
         if (http.readyState == 4 && http.status == 200) {
             const data1 = JSON.parse(http.responseText);
             console.log(data1);
-            players.push(data1.points.total);
-            players.push(data1.badges);
+            players.push(data1);
+            domString1(data1);
             second();        
         } else{
             console.log("status", http.status);
@@ -94,8 +89,10 @@ function httpPlayers (e) {
         if (http.readyState == 4 && http.status == 200) {
             const data2 = JSON.parse(http.responseText);
             console.log(data2);
-            players.push(data2.points.total);
-            players.push(data2.badges);
+            players.push(data2);
+            domString2(data2);
+            console.log(data2);
+            joiner(players);
         } else{
             console.log("status", http.status);
         }
@@ -104,15 +101,28 @@ function httpPlayers (e) {
     http.send();
     }
     // console.log(players);
-    joiner(players);
-};
-
-const joiner = (playersArray) =>{
-    console.log(playersArray);
     
-}
+};
+const joiner = (playersArray) =>{
+
+    let domString = "";
+    if(playersArray[0].points.total > playersArray[1].points.total){
+        domString += `<h3>${playersArray[0].name} is the winner!!!!</h3>`;
+        console.log(playersArray[0].badges);
+        for (let i = 0; i < playersArray[0].badges.length; i++) {
+            domString += `<img class="img-responsive" src="${playersArray[0].badges[i].icon_url}">`;
+        }
+        }
+         else
+        {
+        domString += `<h3>${playersArray[1].name} is the winner!!!!</h3>`;
+        for (let m = 0; m < playersArray[1].badges.length; m++) {    
+            domString += `<img class="img-responsive" src="${playersArray[1].badges[m].icon_url}">`;
+        }
+    }
+    printToDom(domString,"winner");
+};
 const startApp = () => {
     eventTargetButton();
-}
+};
 startApp();
-
